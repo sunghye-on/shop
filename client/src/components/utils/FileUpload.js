@@ -5,7 +5,7 @@ import { FaAlignCenter } from "react-icons/fa";
 import axios from "axios";
 // import { response } from "express";
 
-export function FileUpload() {
+export function FileUpload(props) {
   // 업로드하는 이미지들을 잠시 저장한 state
   const [Images, setImages] = useState([]);
 
@@ -25,6 +25,7 @@ export function FileUpload() {
           // 파일 저장 성공시 실행
           console.log("data" + response.data);
           setImages([...Images, response.data.filePath]);
+          props.refreshFunction([...Images, response.data.filePath]);
         } else {
           alert("파일저장 실패");
         }
@@ -37,6 +38,7 @@ export function FileUpload() {
     // currentIndex에서부터 1개 만큼의 요소를 지워준다.
     newImages.splice(currentIndex, 1);
     setImages(newImages);
+    props.refreshFunction([newImages]);
   };
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
