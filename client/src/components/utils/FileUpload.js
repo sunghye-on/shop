@@ -30,6 +30,14 @@ export function FileUpload() {
         }
       });
   };
+
+  const deleteHandler = (img) => {
+    const currentIndex = Images.indexOf(img);
+    let newImages = [...Images];
+    // currentIndex에서부터 1개 만큼의 요소를 지워준다.
+    newImages.splice(currentIndex, 1);
+    setImages(newImages);
+  };
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
       <Dropzone onDrop={dropHandler}>
@@ -61,7 +69,7 @@ export function FileUpload() {
         }}
       >
         {Images.map((image, index) => (
-          <div key={index}>
+          <div onClick={() => deleteHandler(image)} key={index}>
             <img
               style={{ minWidth: "300px", width: "300px", height: "240px" }}
               src={`http:localhost:5000/${image}`}
