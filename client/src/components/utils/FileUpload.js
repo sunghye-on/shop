@@ -1,11 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import Dropzone from "react-dropzone";
 import { Icon } from "antd";
 import { FaAlignCenter } from "react-icons/fa";
+import axios from "axios";
+// import { response } from "express";
+
 export function FileUpload() {
+  // 업로드하는 이미지들을 잠시 저장한 state
+  const [Images, setImages] = useState([]);
+
+  const dropHandler = (files) => {
+    let formData = new FormData();
+    const config = {
+      header: { "content-type": "multipart/fomr-data" },
+    };
+    formData.append("file", files[0]);
+
+    // formData와 config를 같이 주지 않으면 에러가 난다.
+    axios
+      .post("/api/product/image", formData, config)
+      // 정보를 보내주고 돌아온 정보가 response안에 있다.
+      .then((response) => {
+        if (response.data.success) {
+          // 파일 저장 성공시 실행
+          console.log("data" + response.data);
+          setImages([...Images, response.data.filePath]);
+        } else {
+          alert("파일저장 실패");
+        }
+      });
+  };
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
+      <Dropzone onDrop={dropHandler}>
         {({ getRootProps, getInputProps }) => (
           <section>
             <div
@@ -25,6 +52,23 @@ export function FileUpload() {
           </section>
         )}
       </Dropzone>
+      <div
+        style={{
+          display: "flex",
+          width: "350px",
+          height: "240px",
+          overflow: "scroll hidden ",
+        }}
+      >
+        {Images.map((image, index) => (
+          <div key={index}>
+            <img
+              style={{ minWidth: "300px", width: "300px", height: "240px" }}
+              src={`http:localhost:5000/${image}`}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
