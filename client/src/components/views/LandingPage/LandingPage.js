@@ -3,6 +3,7 @@ import { FaCode } from "react-icons/fa";
 import axios from "axios";
 import { Icon, Col, Card, Row } from "antd";
 import Meta from "antd/lib/card/Meta";
+import ImageSilder from "../../utils/imageSilder";
 function LandingPage() {
   // 받아온 상품들을 저장한 state
   const [Products, setProducts] = useState([]);
@@ -26,10 +27,8 @@ function LandingPage() {
             EX) lg의 경우 6으로 지정해주어 한개가 6의 크기를 가지며 하나의 row의 4개를 가짐
       */
       <Col lg={6} md={8} xs={24} key={index}>
-        <Card
-          cover={<img src={`http://localhost:5000/${product.images[0]}`} />}
-        >
-          <Meta title={product.title} description={product.price} />
+        <Card cover={<ImageSilder images={product.images} />}>
+          <Meta title={product.title} description={`$ ${product.price}`} />
         </Card>
       </Col>
     );
