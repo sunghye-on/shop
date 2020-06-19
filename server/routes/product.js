@@ -42,4 +42,18 @@ router.post("/", (req, res) => {
   });
 });
 
+router.post("/products", (req, res) => {
+  // 상품들의 정보를 가져옴
+  Product.find()
+    // populate를 이용해서 writer의 모든 정보를 받아올 수 있다.
+    .populate("writer")
+    .exec((err, productsInfo) => {
+      if (err) {
+        return res.status(400).json({ success: false, err });
+      } else {
+        return res.status(200).json({ success: true, productsInfo });
+      }
+    });
+});
+
 module.exports = router;
