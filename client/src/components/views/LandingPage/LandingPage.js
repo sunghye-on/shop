@@ -4,12 +4,20 @@ import axios from "axios";
 import { Icon, Col, Card, Row } from "antd";
 import Meta from "antd/lib/card/Meta";
 import ImageSilder from "../../utils/imageSilder";
+import CheckBox from "./Sections/CheckBox";
+import { continents } from "./Sections/Datas";
+
 function LandingPage() {
   // 받아온 상품들을 저장한 state
   const [Products, setProducts] = useState([]);
   const [Skip, setSkip] = useState(0);
   const [Limit, setLimit] = useState(8);
   const [PostSize, setPostSize] = useState(0);
+  const [Filters, setFilters] = useState({
+    continents: [],
+    price: [],
+  });
+
   useEffect(() => {
     let body = {
       skip: Skip,
@@ -60,6 +68,24 @@ function LandingPage() {
       </Col>
     );
   });
+
+  const showFilterResult = (filters) => {
+    let body = {
+      skip: 0,
+      limit: Limit,
+      filters: filters,
+    };
+    getProducts(body);
+    setSkip(0);
+  };
+
+  const handleFilters = (filters, category) => {
+    const newFilters = { ...Filters };
+    newFilters[category] = filters;
+
+    showFilterResult(newFilters);
+  };
+
   return (
     <div style={{ width: "75%", margin: "3rem auto" }}>
       <div style={{ textAlign: "center" }}>
@@ -69,6 +95,11 @@ function LandingPage() {
         </h2>
       </div>
       {/* 필터 */}
+      {/* 체크박스 */}
+      <CheckBox
+        list={continents}
+        handleFilters={(filters) => handleFilters(filters, "continents")}
+      />
       {/* 검색 */}
       {/* 카드 */}
       {/* renderCArd를 이용해서 위에서 처리한다 */}

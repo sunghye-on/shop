@@ -45,8 +45,16 @@ router.post("/", (req, res) => {
 router.post("/products", (req, res) => {
   let limit = req.body.limit ? parseInt(req.body.limit) : 50;
   let skip = req.body.skip ? parseInt(req.body.skip) : 0;
+
+  let findArgs = {};
+  for (let key in req.body.filters) {
+    // 이때key는 continents나 price이다
+    if (req.body.filters[key].length > 0) {
+      findArgs[key] = req.body.filters[key];
+    }
+  }
   // 상품들의 정보를 가져옴
-  Product.find()
+  Product.find(findArgs)
     // populate를 이용해서 writer의 모든 정보를 받아올 수 있다.
     .populate("writer")
     .skip(skip)
