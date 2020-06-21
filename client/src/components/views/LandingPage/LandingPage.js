@@ -7,19 +7,46 @@ import ImageSilder from "../../utils/imageSilder";
 function LandingPage() {
   // 받아온 상품들을 저장한 state
   const [Products, setProducts] = useState([]);
+  const [Skip, setSkip] = useState(0);
+  const [Limit, setLimit] = useState(8);
+  const [PostSize, setPostSize] = useState(0);
   useEffect(() => {
-    axios.post("/api/product/products").then((response) => {
+    let body = {
+      skip: Skip,
+      limit: Limit,
+    };
+    getProducts(body);
+  }, []);
+
+  const getProducts = (body) => {
+    axios.post("/api/product/products", body).then((response) => {
       if (response.data.success) {
-        console.log(response.data);
-        setProducts(response.data.productsInfo);
+        if (body.MoreBtn) {
+          setProducts([...Products, ...response.data.productsInfo]);
+        } else {
+          // console.log(response.data);
+          setProducts(response.data.productsInfo);
+        }
+        setPostSize(response.data.postSize);
       } else {
         alert("상품가져오기 실패");
       }
     });
-  }, []);
+  };
+
+  const loadMoreHandler = () => {
+    let skip = Skip + Limit;
+    let body = {
+      skip: Skip,
+      limit: Limit,
+      MoreBtn: true,
+    };
+    getProducts(body);
+    setSkip(skip);
+  };
 
   const renderCards = Products.map((product, index) => {
-    console.log(product, index);
+    // console.log(product, index);
     return (
       /* 
             한개의 Row는 24의 크기를 가짐
@@ -46,9 +73,12 @@ function LandingPage() {
       {/* 카드 */}
       {/* renderCArd를 이용해서 위에서 처리한다 */}
       <Row gutter={[16, 16]}>{renderCards}</Row>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <button>더보기</button>
-      </div>
+      <br />
+      {PostSize >= Limit && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <button onClick={loadMoreHandler}>더보기</button>
+        </div>
+      )}
     </div>
   );
 }
