@@ -15,7 +15,10 @@ export function FileUpload(props) {
       header: { "content-type": "multipart/form-data" },
     };
     formData.append("file", files[0]);
-
+    for (const i of formData.entries()) {
+      console.log(i);
+    }
+    console.log(formData.get("file"));
     // formData와 config를 같이 주지 않으면 에러가 난다.
     axios
       .post("/api/product/image", formData, config)
@@ -23,7 +26,7 @@ export function FileUpload(props) {
       .then((response) => {
         if (response.data.success) {
           // 파일 저장 성공시 실행
-          console.log("data" + response.data);
+          console.log("data" + response.data.filePath);
           setImages([...Images, response.data.filePath]);
           props.refreshFunction([...Images, response.data.filePath]);
         } else {
@@ -74,7 +77,7 @@ export function FileUpload(props) {
           <div onClick={() => deleteHandler(image)} key={index}>
             <img
               style={{ minWidth: "300px", width: "300px", height: "240px" }}
-              src={`http:localhost:5000/${image}`}
+              src={`http://localhost:5000/${image}`}
             />
           </div>
         ))}

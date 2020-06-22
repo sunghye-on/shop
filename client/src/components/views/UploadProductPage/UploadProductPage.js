@@ -53,13 +53,14 @@ function UploadProductPage(props) {
     }
 
     // 서버에게 전달할 정보들
+    console.log(Images);
     const body = {
       // 현재 로그인되어 있는 유저의 정보
       writer: props.user.userData._id,
       title: Title,
       description: Description,
       price: Price,
-      image: Images,
+      images: Images,
       continents: Continent,
     };
     // 서버에게 값을 request 한다.
