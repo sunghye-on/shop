@@ -5,7 +5,8 @@ import { Icon, Col, Card, Row } from "antd";
 import Meta from "antd/lib/card/Meta";
 import ImageSilder from "../../utils/imageSilder";
 import CheckBox from "./Sections/CheckBox";
-import { continents } from "./Sections/Datas";
+import RadioBox from "./Sections/RadioBox";
+import { continents, price } from "./Sections/Datas";
 
 function LandingPage() {
   // 받아온 상품들을 저장한 state
@@ -79,11 +80,28 @@ function LandingPage() {
     setSkip(0);
   };
 
+  const handlePrice = (val) => {
+    const data = price;
+    let arr = [];
+    for (const key in data) {
+      if (data[key]._id === parseInt(val)) {
+        arr = data[key].array;
+      }
+    }
+    return arr;
+  };
   const handleFilters = (filters, category) => {
     const newFilters = { ...Filters };
     newFilters[category] = filters;
 
+    if (category === "price") {
+      let priceValues = handlePrice(filters);
+      console.log(priceValues);
+      newFilters[category] = priceValues;
+    }
+
     showFilterResult(newFilters);
+    setFilters(newFilters);
   };
 
   return (
@@ -95,11 +113,21 @@ function LandingPage() {
         </h2>
       </div>
       {/* 필터 */}
-      {/* 체크박스 */}
-      <CheckBox
-        list={continents}
-        handleFilters={(filters) => handleFilters(filters, "continents")}
-      />
+      <Row gutter={[16, 16]}>
+        <Col lg={12} xs={24}>
+          <CheckBox
+            list={continents}
+            handleFilters={(filters) => handleFilters(filters, "continents")}
+          />
+        </Col>
+        <Col lg={12} xs={24}>
+          {/* 체크박스 */}
+          <RadioBox
+            list={price}
+            handleFilters={(filters) => handleFilters(filters, "price")}
+          />
+        </Col>
+      </Row>
       {/* 검색 */}
       {/* 카드 */}
       {/* renderCArd를 이용해서 위에서 처리한다 */}

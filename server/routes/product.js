@@ -56,9 +56,19 @@ router.post("/products", (req, res) => {
   for (let key in req.body.filters) {
     // 이때key는 continents나 price이다
     if (req.body.filters[key].length > 0) {
-      findArgs[key] = req.body.filters[key];
+      console.log("test", key);
+      if (key === "price") {
+        // 받아온 price 값에 따라 첫번째 값보다 크거나 같고 두번째 값보다 작거나 같다.
+        findArgs[key] = {
+          $gte: req.body.filters[key][0],
+          $lte: req.body.filters[key][1],
+        };
+      } else {
+        findArgs[key] = req.body.filters[key];
+      }
     }
   }
+  console.log(findArgs);
   // 상품들의 정보를 가져옴
   Product.find(findArgs)
     // populate를 이용해서 writer의 모든 정보를 받아올 수 있다.
