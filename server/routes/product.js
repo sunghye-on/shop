@@ -74,7 +74,8 @@ router.post("/products", (req, res) => {
   if (term) {
     Product.find(findArgs)
       // 받아온 검색어로 검색하는 mongoDB 자체의 기능
-      .find({ $text: { $search: term } })
+      // .find({ $text: { $search: term } })
+      .find({ title: { $regex: term } })
       .populate("writer")
       .skip(skip)
       .limit(limit)
