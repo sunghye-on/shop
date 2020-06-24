@@ -6,6 +6,7 @@ import Meta from "antd/lib/card/Meta";
 import ImageSilder from "../../utils/imageSilder";
 import CheckBox from "./Sections/CheckBox";
 import RadioBox from "./Sections/RadioBox";
+import Search from "./Sections/SearchFeature";
 import { continents, price } from "./Sections/Datas";
 
 function LandingPage() {
@@ -18,6 +19,7 @@ function LandingPage() {
     continents: [],
     price: [],
   });
+  const [SearchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     let body = {
@@ -104,6 +106,18 @@ function LandingPage() {
     setFilters(newFilters);
   };
 
+  const updateSearchTerm = (newValue) => {
+    let body = {
+      skip: 0,
+      limit: Limit,
+      filters: Filters,
+      searchTerm: newValue,
+    };
+    setSkip(0);
+    setSearchTerm(newValue);
+    getProducts(body);
+  };
+
   return (
     <div style={{ width: "75%", margin: "3rem auto" }}>
       <div style={{ textAlign: "center" }}>
@@ -129,6 +143,15 @@ function LandingPage() {
         </Col>
       </Row>
       {/* 검색 */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          margin: "1rem auto",
+        }}
+      >
+        <Search refreshFunction={updateSearchTerm} />
+      </div>
       {/* 카드 */}
       {/* renderCArd를 이용해서 위에서 처리한다 */}
       <Row gutter={[16, 16]}>{renderCards}</Row>

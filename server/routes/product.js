@@ -51,7 +51,8 @@ router.post("/", (req, res) => {
 router.post("/products", (req, res) => {
   let limit = req.body.limit ? parseInt(req.body.limit) : 50;
   let skip = req.body.skip ? parseInt(req.body.skip) : 0;
-
+  let term = req.body.searchTerm;
+  console.log(term);
   let findArgs = {};
   for (let key in req.body.filters) {
     // 이때key는 continents나 price이다
@@ -69,21 +70,44 @@ router.post("/products", (req, res) => {
     }
   }
   console.log(findArgs);
-  // 상품들의 정보를 가져옴
-  Product.find(findArgs)
-    // populate를 이용해서 writer의 모든 정보를 받아올 수 있다.
-    .populate("writer")
-    .skip(skip)
-    .limit(limit)
-    .exec((err, productsInfo) => {
-      if (err) {
-        return res.status(400).json({ success: false, err });
-      } else {
-        return res
-          .status(200)
-          .json({ success: true, productsInfo, postSize: productsInfo.length });
-      }
-    });
+  // 검색어가 있다면
+  if (term) {
+    Product.find(findArgs)
+      // 받아온 검색어로 검색하는 mongoDB 자체의 기능
+      .find({ $text: { $search: term } })
+      .populate("writer")
+      .skip(skip)
+      .limit(limit)
+      .exec((err, productsInfo) => {
+        if (err) {
+          return res.status(400).json({ success: false, err });
+        } else {
+          return res.status(200).json({
+            success: true,
+            productsInfo,
+            postSize: productsInfo.length,
+          });
+        }
+      });
+  } else {
+    // 상품들의 정보를 가져옴
+    Product.find(findArgs)
+      // populate를 이용해서 writer의 모든 정보를 받아올 수 있다.
+      .populate("writer")
+      .skip(skip)
+      .limit(limit)
+      .exec((err, productsInfo) => {
+        if (err) {
+          return res.status(400).json({ success: false, err });
+        } else {
+          return res.status(200).json({
+            success: true,
+            productsInfo,
+            postSize: productsInfo.length,
+          });
+        }
+      });
+  }
 });
 
 module.exports = router;

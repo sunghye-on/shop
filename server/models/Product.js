@@ -42,6 +42,20 @@ const productSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+productSchema.index(
+  {
+    title: "text",
+    description: "text",
+  },
+  {
+    // 각각의 인덱스의 즁요한 정도를 설정가능 (default 1)
+    weights: {
+      title: 5,
+      description: 1,
+    },
+  }
+);
+
 const Product = mongoose.model("Product", productSchema);
 
 module.exports = { Product };
