@@ -65,7 +65,13 @@ function LandingPage() {
             EX) lg의 경우 6으로 지정해주어 한개가 6의 크기를 가지며 하나의 row의 4개를 가짐
       */
       <Col lg={6} md={8} xs={24} key={index}>
-        <Card cover={<ImageSilder images={product.images} />}>
+        <Card
+          cover={
+            <a href={`/product/${product._id}`}>
+              <ImageSilder images={product.images} />
+            </a>
+          }
+        >
           <Meta title={product.title} description={`$ ${product.price}`} />
         </Card>
       </Col>
