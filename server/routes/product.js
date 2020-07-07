@@ -115,11 +115,18 @@ router.get("/products_by_id", (req, res) => {
   let type = req.query.type;
   let productId = req.query.id;
 
-  Product.find({ _id: productId })
+  // array타입이 들어오면
+  if (type === "array") {
+    let ids = req.query.id.split(",");
+    // 각각의 상품들을 productId에 넣어줌
+    productId = ids.map((i) => i);
+  }
+  // array에 존재하는 지 여부를 알 수 있는 $in
+  Product.find({ _id: { $in: productId } })
     .populate("writer")
     .exec((err, product) => {
       if (err) return res.status(400).send(err);
-      return res.status(200).send({ success: true, product });
+      return res.status(200).json({ success: true, product });
     });
 });
 
