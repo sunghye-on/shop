@@ -11,13 +11,9 @@ function DetailProductPage(props) {
     axios
       .get(`/api/product/products_by_id?id=${productId}&type=single`)
       .then((response) => {
-        if (response.data.success) {
-          setProduct(response.data.product[0]);
-          console.log(response.data);
-        } else {
-          alert("실패");
-        }
-      });
+        setProduct(response.data.product[0]);
+      })
+      .catch((err) => alert(err));
   }, []);
   return (
     <div style={{ width: "100%", padding: "3rem 4rem" }}>
