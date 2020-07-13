@@ -22,7 +22,7 @@ function UserCartBlock(props) {
         <td>{product.quantity} 개</td>
         <td>$ {product.price} </td>
         <td>
-          <button>삭제</button>
+          <button onClick={() => props.removeItem(product._id)}>삭제</button>
         </td>
       </tr>
     ));
