@@ -28,14 +28,15 @@ function CartPage(props) {
     console.log(userCart);
     for (const i in userCart) {
       total += parseInt(userCart[i].price) * parseInt(userCart[i].quantity);
-      console.log(userCart[i].price, userCart[i].quantity);
     }
     setTotal(total);
     return total;
   };
   const removeFromCart = (productId) => {
-    console.log(productId);
-    dispatch(removeCartItem(productId)).then((response) => {});
+    console.log("test", productId);
+    dispatch(removeCartItem(productId)).then((response) => {
+      console.log(response);
+    });
   };
   // console.log(props.user.cartDetail);
   return (
