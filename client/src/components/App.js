@@ -17,7 +17,7 @@ import CartPage from "./views/CartPage/CartPage";
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <NavBar />
+      <NavBar auth={Auth} />
       <div style={{ paddingTop: "69px", minHeight: "calc(100vh - 80px)" }}>
         <Switch>
           <Route exact path="/" component={Auth(LandingPage, null)} />
