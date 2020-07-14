@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Empty, Alert } from "antd";
 import { getCartItems, removeCartItem } from "../../../_actions/user_actions";
 import UserCartBlock from "./Section/UserCartBlock";
 function CartPage(props) {
   const dispatch = useDispatch();
   const [Cart, setCart] = useState();
   const [Total, setTotal] = useState(0);
+  const [ShowTotal, setShowTotal] = useState(false);
   useEffect(() => {
     const userData = props.user.userData;
     let cartData = [];
@@ -30,12 +32,15 @@ function CartPage(props) {
       total += parseInt(userCart[i].price) * parseInt(userCart[i].quantity);
     }
     setTotal(total);
+    setShowTotal(true);
     return total;
   };
   const removeFromCart = (productId) => {
     console.log("test", productId);
     dispatch(removeCartItem(productId)).then((response) => {
-      console.log(response);
+      if (response.payload.productInfo.length <= 0) {
+        setShowTotal(false);
+      }
     });
   };
   // console.log(props.user.cartDetail);
@@ -48,8 +53,20 @@ function CartPage(props) {
           removeItem={removeFromCart}
         />
       </div>
-
-      <div style={{ marginTop: "3rem" }}>합계 {Total}원</div>
+      {ShowTotal ? (
+        <div style={{ marginTop: "3rem" }}>
+          <Alert message={`합계 ${Total}원`} type="info" />
+        </div>
+      ) : (
+        <>
+          <br />
+          <Empty description={false} />
+          <br />
+          <div>
+            <Alert message="장바구니에 상품이 없습니다." type="error" />
+          </div>
+        </>
+      )}
     </div>
   );
 }
