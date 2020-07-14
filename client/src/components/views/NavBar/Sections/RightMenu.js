@@ -38,7 +38,7 @@ function RightMenu(props) {
         </Menu.Item>
 
         <Menu.Item key="cart" style={{ paddingBottom: 3 }}>
-          <Badge count={99} overflowCount={10}>
+          <Badge count={props.total} overflowCount={10}>
             <a
               href="/user/cart"
               className="head-example"
