@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { Empty, Alert } from "antd";
 import { getCartItems, removeCartItem } from "../../../_actions/user_actions";
 import UserCartBlock from "./Section/UserCartBlock";
+import Paypal from "../../utils/Paypal";
+
 function CartPage(props) {
   const dispatch = useDispatch();
   const [Cart, setCart] = useState();
@@ -67,6 +69,8 @@ function CartPage(props) {
           </div>
         </>
       )}
+      <br />
+      {ShowTotal ? <Paypal /> : <></>}
     </div>
   );
 }
