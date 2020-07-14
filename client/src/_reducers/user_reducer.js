@@ -30,11 +30,13 @@ export default function (state = {}, action) {
     case GET_CART_ITEMS:
       return { ...state, cartDetail: action.payload };
     case REMOVE_CART_ITEM:
-      console.log(action.payload);
       return {
         ...state,
-        cartDetail: action.payload.productInfo,
-        userData: { ...state.userData, cart: action.payload.cart },
+        cartDetail: action.payload.cartDetail,
+        userData: {
+          ...state.userData,
+          cart: action.payload.cart,
+        },
       };
     default:
       return state;

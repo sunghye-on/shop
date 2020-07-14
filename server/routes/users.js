@@ -123,7 +123,6 @@ router.post("/addToCart", auth, (req, res) => {
 });
 
 router.get("/removeFromCart", auth, (req, res) => {
-  console.log(req.user._id, "아이디", req.query.id);
   // 카트안에 상품 지우기
   User.findOneAndUpdate(
     { _id: req.user._id },
@@ -138,8 +137,12 @@ router.get("/removeFromCart", auth, (req, res) => {
       });
       Product.find({ _id: { $in: array } })
         .populate("writer")
-        .exec((err, productInfo) => {
-          return res.status(200).json({ productInfo, cart });
+        .exec((err, cartDetail) => {
+          console.log(cartDetail, cart);
+          return res.status(200).json({
+            cartDetail,
+            cart,
+          });
         });
     }
   );

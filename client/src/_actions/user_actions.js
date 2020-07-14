@@ -93,9 +93,9 @@ export function removeCartItem(id) {
     .get(`/api/users/removeFromCart?id=${id}`)
     .then((response) => {
       response.data.cart.forEach((element) => {
-        response.data.productInfo.forEach((product, index) => {
+        response.data.cartDetail.forEach((product, index) => {
           if (element.id === product._id) {
-            response.data.productInfo[index].quantity = element.quantity;
+            response.data.cartDetail[index].quantity = element.quantity;
           }
         });
       });
