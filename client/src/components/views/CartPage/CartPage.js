@@ -40,8 +40,11 @@ function CartPage(props) {
   const removeFromCart = (productId) => {
     console.log("test", productId);
     dispatch(removeCartItem(productId)).then((response) => {
-      if (response.payload.productInfo.length <= 0) {
-        setShowTotal(false);
+      if (response.payload.cartDetail) {
+        console.log("enter?");
+        if (response.payload.cartDetail.length <= 0) {
+          setShowTotal(false);
+        }
       }
     });
   };
