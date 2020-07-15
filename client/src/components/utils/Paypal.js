@@ -17,10 +17,11 @@ export default class Paypal extends React.Component {
 
     let env = "sandbox";
     let currency = "USD";
-    let total = 1;
+    let total = this.props.total;
 
     const client = {
-      sandbox: "YOUR-SANDBOX-APP-ID",
+      sandbox:
+        "AVsx6PgGVnKSwIjrAj1gYzJtqM6JQA4-RTO-wetu9ErD8gjbdP-c0WU3TBHXYBecWuusYCSlJbnvLDz7",
       production: "YOUR-PRODUCTION-APP-ID",
     };
     return (
