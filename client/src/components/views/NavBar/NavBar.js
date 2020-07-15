@@ -8,10 +8,12 @@ import { useSelector } from "react-redux";
 function NavBar() {
   const user = useSelector((state) => state.user);
   useEffect(() => {
-    if (user.userData !== undefined) {
-      setTotal(user.userData.cart.length);
-    }
-  }, [user]);
+    if (user.isAuth)
+      if (user.userData !== undefined) {
+        console.log(user);
+        setTotal(user.userData.cart.length);
+      }
+  }, [user, user.isAuth]);
   const [visible, setVisible] = useState(false);
   const [Total, setTotal] = useState(0);
 
